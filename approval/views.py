@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import json
 from django.http import HttpResponse
 from .models import UserProfile,Prescription, RequestQ
-from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
