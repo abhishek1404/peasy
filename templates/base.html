@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+<main>
+    <br>
+    {% for item in data %}
+<h2> <a href="{% url 'user-page' id=item.id %}">{{item.id}}</a> {{item.user}} {{item.user_type}}</h2>
+{% endfor %}
+</main>
+
+</body>
+</html>

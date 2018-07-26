@@ -1,0 +1,69 @@
+<html lang="en">
+
+<body>
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p><a href="{% url 'logout' %}">logout</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+{% endblock %}
+{% block body %}
+
+<main>
+    <br>
+    {% if user_type == 'p' %}
+    <div class="col s12 m8 offset-m2">
+                <h4>Pending Approvals</h4>
+                {% for item in data %}
+        <p>{{item.requested_by}} has requested to view your prescrition</p>
+         {{item.status}}
+
+                            <form action="{% url 'approve' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="request_id" value="{{ item.id}}">
+                                <button class="btn waves-effect waves-light" type="submit" style="float: right;margin-bottom: 10px;margin-right: 10px;">Approve
+                                    <i class="material-icons right">Request</i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+{% endfor %}
+    {% else %}
+
+                <h4>Patient prescriptions</h4>
+                {% for item in data %}
+        {% if item.prescription == None %}
+    <p> Ask for prescrition of patient {{item.id}}
+
+                            <form action="{% url 'ask-approval' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="requested_to" value="{{ item.id}}">
+                                <button type="submit">Ask for Prescription
+                                </button>
+                            </form></p>
+        {% elif item.prescription == 'Pending' %}
+    <p> Waiting for prescrition of patient {{item.id}}
+        <button type="submit">Waiting for Prescription
+                                </button>
+
+        {% else %}
+            <p>prescrition of patient {{item.prescription.user_id}} is  {{item.prescription.content}}</p>
+
+
+
+
+   {% endif %}
+{% endfor %}
+
+</main>
+{% endif %}
+{% endblock %}
+
+</body>
+</html>
